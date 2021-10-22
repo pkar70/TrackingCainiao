@@ -1,0 +1,139 @@
+﻿<Page
+    x:Class="TrackingCainiao.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TrackingCainiao"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition  />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" FontSize="24" Text="Śledzenie" />
+
+        <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="10" Name="uiVers" />
+        <Button Grid.Row="1" HorizontalAlignment="Right" Name="uiRozwinAdd">
+            <SymbolIcon Symbol="Add" />
+        </Button>
+
+        <Grid Grid.Row="2" Visibility="Collapsed" Name="uiAddForm">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Header="Numer" Name="uiPaczkaNumer" Margin="5,0,5,0"/>
+            <TextBox Grid.Column="1" Header="Nazwa" Name="uiPaczkaNazwa" Margin="5,0,5,0"/>
+            <Button Grid.Column="2" Name="uiAdd">
+                <SymbolIcon Symbol="Add" />
+            </Button>
+        </Grid>
+
+        <ListView x:Name="uiItems" Grid.Row="3" Margin="2,5,5,5" HorizontalContentAlignment="Stretch"  >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
+                    <Setter Property="MinHeight" Value="30"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding sNazwa, Mode=OneWay }" />
+                        <TextBlock Grid.Column="1" Text="{Binding sLastEvent, Mode=OneWay }" />
+                        <TextBlock Grid.Column="2" Text="{Binding sLastDate, Mode=OneWay }" />
+<!--                        <Button Grid.Column="3" Content="..." Name="uiDetails" />
+                        <Button Grid.Column="4" Content="del" IsEnabled="false" /> -->
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="show details" Click="uiShowDetailsThis_Click" />
+                                <MenuFlyoutItem Text="copy link" Click="uiCopyLinkThis_Click" />
+                                <MenuFlyoutSubItem Text="go web">
+                                    <MenuFlyoutItem Text="cainiao" Click="uiGoWebThis_Click" />
+                                    <MenuFlyoutItem Text="sypost" Click="uiGoSypostThis_Click" />
+                                    <MenuFlyoutItem Text="PocztaPL" Click="uiGoPPWebThis_Click" />
+                                </MenuFlyoutSubItem>
+                                <MenuFlyoutItem Text="refresh" Click="uiRefreshThis_Click" />
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutSubItem Text="Zakończenie">
+                                    <MenuFlyoutItem Text="kurier" Click="uiDostalemThis_Click" />
+                                    <MenuFlyoutItem Text="skrzynka" Click="uiDostalemThis_Click" />
+                                    <MenuFlyoutItem Text="awizo" Click="uiDostalemThis_Click" />
+                                    <MenuFlyoutSeparator/>
+                                    <MenuFlyoutItem Text="timeout-dispute" Click="uiDostalemThis_Click" />
+                                </MenuFlyoutSubItem>
+                                
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Grid Grid.Row="4" x:Name="uiDetailsPaczki" Visibility="Collapsed" BorderBrush="Blue" BorderThickness="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button HorizontalAlignment="Right" Content="Close" Click="uiDetailsClose_Click" />
+            <TextBlock HorizontalAlignment="Left" Name="uiPaczkaName" />
+
+            <ListView x:Name="uiDetailsItems" Grid.Row="1" Margin="2,5,5,5" HorizontalContentAlignment="Stretch"  >
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
+                        <Setter Property="MinHeight" Value="10"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding time, Mode=OneWay }" Margin="0,0,10,0" />
+                            <TextBlock Grid.Column="1" Text="{Binding desc, Mode=OneWay }" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+        
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <TextBlock Name="uiMsg" Text=" " Margin="0,0,0,10" VerticalAlignment="Center" />
+            </CommandBar.Content>
+
+            <AppBarToggleButton Icon="Find" Label="Szukaj" Click="uiSearch_Click"/>
+            <AppBarButton Icon="Refresh" Label="Wczytaj" Click="uiRefresh_Click"/>
+            <AppBarToggleButton Name="uiClockRead" Icon="Clock" Label="Samoczytaj" Click="uiClockRead_Click"/>
+            <AppBarButton Icon="TwoPage" Label="Open explorer" Click="uiOpenExpl_Click" />
+        </CommandBar>
+
+    </Page.BottomAppBar>
+
+</Page>
